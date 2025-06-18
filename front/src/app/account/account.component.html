@@ -1,0 +1,19 @@
+<div class="container">
+  <div *ngIf="loading; else notLoading" class="sub-container msg-container loading-container">
+    <span>Loading ...</span>
+  </div>
+</div>
+
+<ng-template #notLoading>
+  <div class="container">
+    <div *ngIf="errorMessage" class="sub-container msg-container error-container">
+      <span>{{ errorMessage }}</span>
+    </div>
+
+    <div class="sub-container">
+      <app-account-balance
+        [balance]="balance"
+      ></app-account-balance>
+    </div>
+  </div>
+</ng-template>

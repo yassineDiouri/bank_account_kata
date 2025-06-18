@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  gap: 20px;
+
+  & .sub-container {
+    width: 50%;
+
+    &.msg-container {
+      text-align: center;
+      font-size: 24px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      border-radius: 15px;
+
+      &.loading-container {
+        color: blue;
+        background-color: rgba(0, 0, 255, 0.1);
+      }
+
+      &.error-container {
+        color: red;
+        background-color: rgba(255, 0, 0, 0.1);
+      }
+    }
+  }
+}

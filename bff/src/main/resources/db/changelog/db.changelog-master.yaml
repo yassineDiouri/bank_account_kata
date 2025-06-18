@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: DIOURI Yassine
+      changes:
+        - createTable:
+            tableName: account
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: balance
+                  type: DECIMAL(19,2)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 2
+      author: DIOURI Yassine
+      changes:
+        - insert:
+            tableName: account
+            columns:
+              - column:
+                  name: balance
+                  valueNumeric: 0.00
