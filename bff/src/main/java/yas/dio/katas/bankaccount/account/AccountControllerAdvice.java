@@ -15,7 +15,7 @@ public class AccountControllerAdvice {
                 .body(ex.getMessage());
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler({IllegalArgumentException.class, NumberFormatException.class})
     public ResponseEntity<String> handleIllegalArgument(final IllegalArgumentException ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
