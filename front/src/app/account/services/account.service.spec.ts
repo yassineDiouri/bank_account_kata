@@ -35,7 +35,7 @@ describe('AccountService', () => {
     });
   });
 
-  it('deposit should call http client for accounts url', () => {
+  it('deposit should call http client for accounts url using put method', () => {
     service.deposit(1, 100).subscribe(() => {});
     const req = httpMock.expectOne(`${environment.apiBaseUrl}${environment.accountsPath}/1`);
     expect(req.request.method).toBe('PUT');
@@ -58,6 +58,40 @@ describe('AccountService', () => {
   [undefined, null].forEach(amount => {
     it(`deposit should throw Error for ${amount} arg amount`, (done) => {
       service.deposit(1, amount as any).subscribe({
+        next: () => {
+          fail('Expected an error, but got a value');
+        },
+        error: (err) => {
+          expect(err).toBeTruthy();
+          done();
+        }
+      });
+    });
+  });
+
+  it('withdraw should call http client for accounts url using post method', () => {
+    service.withdraw(1, 100).subscribe(() => {});
+    const req = httpMock.expectOne(`${environment.apiBaseUrl}${environment.accountsPath}/1`);
+    expect(req.request.method).toBe('POST');
+  });
+
+  [undefined, null].forEach(id => {
+    it(`withdraw should throw Error for ${id} arg id`, (done) => {
+      service.withdraw(id as any, 100).subscribe({
+        next: () => {
+          fail('Expected an error, but got a value');
+        },
+        error: (err) => {
+          expect(err).toBeTruthy();
+          done();
+        }
+      });
+    });
+  });
+
+  [undefined, null].forEach(amount => {
+    it(`withdraw should throw Error for ${amount} arg amount`, (done) => {
+      service.withdraw(1, amount as any).subscribe({
         next: () => {
           fail('Expected an error, but got a value');
         },
