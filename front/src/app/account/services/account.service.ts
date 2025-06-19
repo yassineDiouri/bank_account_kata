@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Observable, throwError} from "rxjs";
+import {Observable, of, throwError} from "rxjs";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,10 @@ export class AccountService {
     if (id === undefined) {
       return throwError(() => new Error('Invalid id'));
     }
-    return this.http.get<number>(`http://localhost:8080/api/accounts/${id}`);
+    return this.http.get<number>(`${environment.apiBaseUrl}${environment.accountsPath}/${id}`);
+  }
+
+  deposit(id: number, amount: number): Observable<void> {
+    return of();
   }
 }
