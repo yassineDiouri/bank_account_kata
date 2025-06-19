@@ -8,6 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import yas.dio.katas.bankaccount.account.Account;
+import yas.dio.katas.bankaccount.transaction.Transaction;
+import yas.dio.katas.bankaccount.transaction.TransactionRepository;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
