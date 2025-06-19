@@ -31,4 +31,9 @@ public class AccountServiceImpl implements AccountService {
         final Account account = accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
         account.setBalance(account.getBalance() + amount);
     }
+
+    @Override
+    public void withdraw(Long id, double amount) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

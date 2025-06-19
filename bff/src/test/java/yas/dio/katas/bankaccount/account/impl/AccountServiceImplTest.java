@@ -87,6 +87,41 @@ class AccountServiceImplTest {
         }
     }
 
+    @Nested
+    class Withdraw {
+        @Test
+        void should_retrieve_amount_from_existent_account_balance() {
+            //given
+            final Account account = buildAccount(1000d);
+
+            when(accountRepository.findById(anyLong())).thenReturn(Optional.of(account));
+            //when
+            accountService.withdraw(1L, 100);
+            //then
+            assertEquals(900d, account.getBalance());
+        }
+
+        @ParameterizedTest
+        @ValueSource(doubles =  {0, -100d})
+        void should_throws_IllegalArgumentException_when_amount_is_negative_or_zero(final double amount) {
+            //given
+            //when
+            Executable actual = () -> accountService.withdraw(1L, amount);
+            //then
+            assertThrows(IllegalArgumentException.class, actual);
+        }
+
+        @Test
+        void should_throws_AccountNotFoundException_when_id_not_found() {
+            //given
+            when(accountRepository.findById(anyLong())).thenReturn(Optional.empty());
+            //when
+            Executable actual = () -> accountService.withdraw(1L, 1000d);
+            //then
+            assertThrows(AccountNotFoundException.class, actual);
+        }
+    }
+
     private static Account buildAccount(double balance) {
         final Account account = new Account();
         account.setBalance(balance);
