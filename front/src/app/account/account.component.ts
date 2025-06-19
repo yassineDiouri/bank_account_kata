@@ -38,9 +38,9 @@ export class AccountComponent implements OnInit {
 
   private loadAccountBalance() {
     this.loading = true;
-    this.accountService.getBalance(this.extractIdFromUrl())
+    this.accountService.getStatement(this.extractIdFromUrl())
       .pipe(take(1), delay(500))
-      .subscribe((balance) => this.balance = balance,
+      .subscribe((statement) => this.balance = statement.balance,
         (error) => this.errorMessage = error,
         () => this.loading = false);
   }

@@ -7,13 +7,15 @@ import {AccountBalanceComponent} from "./components/account-balance/account-bala
 import {HttpClientModule} from "@angular/common/http";
 import { AccountOperationsComponent } from './components/account-operations/account-operations.component';
 import {FormsModule} from "@angular/forms";
+import { AccountStatementComponent } from './components/account-statement/account-statement.component';
 
 
 @NgModule({
   declarations: [
     AccountComponent,
     AccountBalanceComponent,
-    AccountOperationsComponent
+    AccountOperationsComponent,
+    AccountStatementComponent
   ],
   imports: [
     CommonModule,
