@@ -29,6 +29,13 @@ export class AccountComponent implements OnInit {
         (error) => this.errorMessage = error);
   }
 
+  withdraw(amount: number) {
+    this.accountService.withdraw(this.extractIdFromUrl(), amount)
+      .pipe(take(1))
+      .subscribe(() => this.loadAccountBalance(),
+        (error) => this.errorMessage = error);
+  }
+
   private loadAccountBalance() {
     this.loading = true;
     this.accountService.getBalance(this.extractIdFromUrl())

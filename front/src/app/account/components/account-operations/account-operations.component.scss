@@ -25,4 +25,19 @@
       opacity: 0.8;
     }
   }
+
+  & .withdrawal-btn {
+    width: 25%;
+    height: 36px;
+    font-size: 20px;
+    text-align: center;
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
 }
