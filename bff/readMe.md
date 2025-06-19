@@ -22,3 +22,12 @@ All versions are the same as the parent Spring Boot dependencies
 - US-1: Account deposit
 - US-2: Account withdraw
 - US-3: Account statement
+
+## Setup & Start
+
+```
+cd bff
+mvn clean install
+mvn springboot:run
+```
+

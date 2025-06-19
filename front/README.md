@@ -11,6 +11,14 @@
 - US-2: Account withdraw
 - US-3: Account statement printing
 
+## Setup & Start
+
+```
+cd front
+npm install
+npm run start
+```
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
