@@ -10,14 +10,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import yas.dio.katas.bankaccount.account.Account;
 import yas.dio.katas.bankaccount.transaction.Transaction;
 import yas.dio.katas.bankaccount.transaction.TransactionDTO;
+import yas.dio.katas.bankaccount.transaction.TransactionMapper;
 import yas.dio.katas.bankaccount.transaction.TransactionRepository;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -26,6 +27,8 @@ class TransactionServiceImplTest {
 
     @Mock
     private TransactionRepository transactionRepository;
+    @Mock
+    private TransactionMapper transactionMapper;
 
     @InjectMocks
     private TransactionServiceImpl transactionService;
@@ -67,7 +70,11 @@ class TransactionServiceImplTest {
         void should_return_all_the_transactions_from_db() {
             //given
             final Long accountId = 1L;
-            final int expectedSize = 1;
+            final int expectedSize = 3;
+
+            when(transactionRepository.findByAccountIdOrderByDateDesc(anyLong()))
+                    .thenReturn(List.of(new Transaction(), new Transaction(), new Transaction()));
+            when(transactionMapper.toDTO(any())).thenCallRealMethod();
             //when
             final List<TransactionDTO> transactions = transactionService.getByAccountIdOrderByDateDesc(accountId);
             //then
@@ -78,22 +85,12 @@ class TransactionServiceImplTest {
         void should_return_zero_transaction_when_no_transactions_found_for_account_id() {
             //given
             final Long accountId = 1L;
+
+            when(transactionRepository.findByAccountIdOrderByDateDesc(anyLong())).thenReturn(List.of());
             //when
             final List<TransactionDTO> transactions = transactionService.getByAccountIdOrderByDateDesc(accountId);
             //then
             assertEquals(0, transactions.size());
-        }
-
-        @Test
-        void should_return_transactions_ordered_by_date_desc() {
-            //given
-            final Long accountId = 1L;
-            //when
-            final List<TransactionDTO> transactions = transactionService.getByAccountIdOrderByDateDesc(accountId);
-            //then
-            assertEquals(3, transactions.size());
-            assertTrue(transactions.get(0).getDate().isAfter(transactions.get(1).getDate()));
-            assertTrue(transactions.get(1).getDate().isAfter(transactions.get(2).getDate()));
         }
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import yas.dio.katas.bankaccount.account.Account;
 import yas.dio.katas.bankaccount.transaction.Transaction;
 import yas.dio.katas.bankaccount.transaction.TransactionDTO;
+import yas.dio.katas.bankaccount.transaction.TransactionMapper;
 import yas.dio.katas.bankaccount.transaction.TransactionRepository;
 import yas.dio.katas.bankaccount.transaction.TransactionService;
 
@@ -17,6 +18,7 @@ import java.util.List;
 public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
+    private final TransactionMapper transactionMapper;
 
     @Override
     @Transactional
@@ -36,7 +38,10 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @Transactional(readOnly = true)
     public List<TransactionDTO> getByAccountIdOrderByDateDesc(final Long accountId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return transactionRepository.findByAccountIdOrderByDateDesc(accountId)
+                .stream()
+                .map(transactionMapper::toDTO)
+                .toList();
     }
 
     private void assertAccountNotNull(final Account account) {

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class TransactionDTO {
-    private double amount;
     private LocalDateTime date;
+    private double amount;
+    private double balance;
 }
