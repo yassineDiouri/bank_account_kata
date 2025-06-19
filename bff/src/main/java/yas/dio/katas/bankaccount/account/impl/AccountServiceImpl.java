@@ -19,4 +19,9 @@ public class AccountServiceImpl implements AccountService {
                 .map(Account::getBalance)
                 .orElseThrow(() -> new AccountNotFoundException(id));
     }
+
+    @Override
+    public void deposit(Long id, double amount) {
+        throw new UnsupportedOperationException();
+    }
 }
