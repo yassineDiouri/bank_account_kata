@@ -33,6 +33,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public void withdraw(Long id, double amount) {
         if (amount <= 0) {
             throw new IllegalArgumentException("Amount must be greater than zero");
