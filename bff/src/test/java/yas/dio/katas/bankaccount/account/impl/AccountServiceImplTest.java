@@ -70,9 +70,6 @@ class AccountServiceImplTest {
         @ValueSource(doubles =  {0, -100d})
         void should_throws_IllegalArgumentException_when_amount_is_negative_or_zero(final double amount) {
             //given
-            final Account account = buildAccount(1000d);
-
-            when(accountRepository.findById(anyLong())).thenReturn(Optional.of(account));
             //when
             Executable actual = () -> accountService.deposit(1L, amount);
             //then
