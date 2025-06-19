@@ -19,6 +19,9 @@ export class AccountService {
   }
 
   deposit(id: number, amount: number): Observable<void> {
+    if (id === undefined || id === null) {
+      return throwError(() => new Error('Invalid id'));
+    }
     return of();
   }
 }
