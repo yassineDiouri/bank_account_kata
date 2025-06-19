@@ -61,10 +61,13 @@ class TransactionServiceImplTest {
         }
     }
 
+    @Nested
     class GetByAccountIdOrderByDateDesc {
         @Test
         void should_return_all_the_transactions_from_db() {
             //given
+            final Long accountId = 1L;
+            final int expectedSize = 1;
             //when
             final List<TransactionDTO> transactions = transactionService.getByAccountIdOrderByDateDesc(accountId);
             //then
@@ -74,6 +77,7 @@ class TransactionServiceImplTest {
         @Test
         void should_return_zero_transaction_when_no_transactions_found_for_account_id() {
             //given
+            final Long accountId = 1L;
             //when
             final List<TransactionDTO> transactions = transactionService.getByAccountIdOrderByDateDesc(accountId);
             //then
@@ -83,12 +87,13 @@ class TransactionServiceImplTest {
         @Test
         void should_return_transactions_ordered_by_date_desc() {
             //given
+            final Long accountId = 1L;
             //when
             final List<TransactionDTO> transactions = transactionService.getByAccountIdOrderByDateDesc(accountId);
             //then
             assertEquals(3, transactions.size());
-            assertTrue(transactions.get(0).getDate().after(transactions.get(1).getDate()));
-            assertTrue(transactions.get(1).getDate().after(transactions.get(2).getDate()));
+            assertTrue(transactions.get(0).getDate().isAfter(transactions.get(1).getDate()));
+            assertTrue(transactions.get(1).getDate().isAfter(transactions.get(2).getDate()));
         }
     }
 }
