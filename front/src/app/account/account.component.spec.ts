@@ -4,6 +4,7 @@ import {AccountComponent} from './account.component';
 import {AccountService} from "./services/account.service";
 import {ActivatedRoute} from "@angular/router";
 import {of} from "rxjs";
+import {Statement} from "./models/statement.model";
 
 describe('AccountComponent', () => {
   let component: AccountComponent;
@@ -14,7 +15,7 @@ describe('AccountComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [AccountComponent],
       providers: [
-        {provide: AccountService, useValue: jasmine.createSpyObj('AccountService', ['getBalance'])},
+        {provide: AccountService, useValue: jasmine.createSpyObj('AccountService', ['getStatement'])},
         {
           provide: ActivatedRoute, useValue: {
             snapshot: {
@@ -34,7 +35,7 @@ describe('AccountComponent', () => {
   });
 
   it('should create', () => {
-    accountService.getBalance.and.returnValue(of(1000));
+    accountService.getStatement.and.returnValue(of({} as Statement));
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });

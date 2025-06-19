@@ -12,12 +12,20 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import yas.dio.katas.bankaccount.account.Account;
 import yas.dio.katas.bankaccount.account.AccountNotFoundException;
 import yas.dio.katas.bankaccount.account.AccountRepository;
+import yas.dio.katas.bankaccount.statement.StatementDTO;
+import yas.dio.katas.bankaccount.transaction.TransactionDTO;
+import yas.dio.katas.bankaccount.transaction.TransactionService;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,20 +33,49 @@ class AccountServiceImplTest {
 
     @Mock
     private AccountRepository accountRepository;
+    @Mock
+    private TransactionService transactionService;
 
     @InjectMocks
     private AccountServiceImpl accountService;
 
     @Nested
-    class GetBalance {
+    class GetStatement {
         @Test
-        void should_return_account_balance_when_found() {
+        void should_return_account_statement_with_balance_and_zero_transactions_when_found() {
             //given
             when(accountRepository.findById(anyLong())).thenReturn(Optional.of(buildAccount(100d)));
+            when(transactionService.getByAccountIdOrderByDateDesc(anyLong())).thenReturn(List.of());
             //when
-            final double actual = accountService.getBalance(1L);
+            final StatementDTO actual = accountService.getStatement(1L);
             //then
-            assertEquals(100d, actual);
+            assertEquals(100d, actual.getBalance());
+            assertEquals(0, actual.getTransactions().size());
+        }
+
+        @Test
+        void should_return_account_statement_with_balance_and_unique_transaction_when_found() {
+            //given
+            when(accountRepository.findById(anyLong())).thenReturn(Optional.of(buildAccount(100d)));
+            when(transactionService.getByAccountIdOrderByDateDesc(anyLong())).thenReturn(List.of(new TransactionDTO()));
+            //when
+            final StatementDTO actual = accountService.getStatement(1L);
+            //then
+            assertEquals(100d, actual.getBalance());
+            assertEquals(1, actual.getTransactions().size());
+        }
+
+        @Test
+        void should_return_account_statement_with_balance_and_multi_transactions_when_found() {
+            //given
+            when(accountRepository.findById(anyLong())).thenReturn(Optional.of(buildAccount(100d)));
+            when(transactionService.getByAccountIdOrderByDateDesc(anyLong()))
+                    .thenReturn(List.of(new TransactionDTO(), new TransactionDTO(), new TransactionDTO(), new TransactionDTO(), new TransactionDTO()));
+            //when
+            final StatementDTO actual = accountService.getStatement(1L);
+            //then
+            assertEquals(100d, actual.getBalance());
+            assertEquals(5, actual.getTransactions().size());
         }
 
         @Test
@@ -46,7 +83,7 @@ class AccountServiceImplTest {
             //given
             when(accountRepository.findById(anyLong())).thenReturn(Optional.empty());
             //when
-            Executable actual = () -> accountService.getBalance(1L);
+            Executable actual = () -> accountService.getStatement(1L);
             //then
             assertThrows(AccountNotFoundException.class, actual);
         }
@@ -55,19 +92,21 @@ class AccountServiceImplTest {
     @Nested
     class Deposit {
         @Test
-        void should_add_amount_to_existent_account_balance() {
+        void should_add_amount_to_existent_account_balance_and_add_new_positive_transaction() {
             //given
             final Account account = buildAccount(1000d);
 
             when(accountRepository.findById(anyLong())).thenReturn(Optional.of(account));
+            doNothing().when(transactionService).save(any(Account.class), anyDouble());
             //when
             accountService.deposit(1L, 100);
             //then
             assertEquals(1100d, account.getBalance());
+            verify(transactionService).save(account, 100d);
         }
 
         @ParameterizedTest
-        @ValueSource(doubles =  {0, -100d})
+        @ValueSource(doubles = {0, -100d})
         void should_throws_IllegalArgumentException_when_amount_is_negative_or_zero(final double amount) {
             //given
             //when
@@ -90,19 +129,21 @@ class AccountServiceImplTest {
     @Nested
     class Withdraw {
         @Test
-        void should_retrieve_amount_from_existent_account_balance() {
+        void should_retrieve_amount_from_existent_account_balance_and_add_new_negative_transaction() {
             //given
             final Account account = buildAccount(1000d);
 
             when(accountRepository.findById(anyLong())).thenReturn(Optional.of(account));
+            doNothing().when(transactionService).save(any(Account.class), anyDouble());
             //when
             accountService.withdraw(1L, 100);
             //then
             assertEquals(900d, account.getBalance());
+            verify(transactionService).save(account, -100d);
         }
 
         @ParameterizedTest
-        @ValueSource(doubles =  {0, -100d})
+        @ValueSource(doubles = {0, -100d})
         void should_throws_IllegalArgumentException_when_amount_is_negative_or_zero(final double amount) {
             //given
             //when

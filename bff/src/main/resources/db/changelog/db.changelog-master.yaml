@@ -28,3 +28,5 @@ databaseChangeLog:
               - column:
                   name: balance
                   valueNumeric: 0.00
+  - include:
+      file: db/changelog/transaction.changelog.yaml

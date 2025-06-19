@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AccountService} from "./services/account.service";
 import {ActivatedRoute} from "@angular/router";
 import {delay, take} from "rxjs";
+import {Statement} from "./models/statement.model";
 
 @Component({
   selector: 'app-account',
@@ -10,7 +11,7 @@ import {delay, take} from "rxjs";
 })
 export class AccountComponent implements OnInit {
 
-  balance: number | undefined;
+  statement: Statement | undefined;
   errorMessage: string | undefined;
   loading = true;
 
@@ -38,9 +39,9 @@ export class AccountComponent implements OnInit {
 
   private loadAccountBalance() {
     this.loading = true;
-    this.accountService.getBalance(this.extractIdFromUrl())
+    this.accountService.getStatement(this.extractIdFromUrl())
       .pipe(take(1), delay(500))
-      .subscribe((balance) => this.balance = balance,
+      .subscribe((statement) => this.statement = statement,
         (error) => this.errorMessage = error,
         () => this.loading = false);
   }

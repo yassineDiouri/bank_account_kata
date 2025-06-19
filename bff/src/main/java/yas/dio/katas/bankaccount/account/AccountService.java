@@ -1,15 +1,17 @@
 package yas.dio.katas.bankaccount.account;
 
+import yas.dio.katas.bankaccount.statement.StatementDTO;
+
 public interface AccountService {
 
     /**
-     * Get the account balance for given id<br/>
+     * Get the account statement for given id<br/>
      * If account not found throws {@link AccountNotFoundException}
      *
      * @param id Account id
-     * @return Current account balance
+     * @return Account statement
      */
-    double getBalance(Long id);
+    StatementDTO getStatement(Long id);
 
     /**
      * Make a deposit to given account Id<br/>
