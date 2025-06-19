@@ -7,6 +7,7 @@ import yas.dio.katas.bankaccount.account.Account;
 import yas.dio.katas.bankaccount.account.AccountNotFoundException;
 import yas.dio.katas.bankaccount.account.AccountRepository;
 import yas.dio.katas.bankaccount.account.AccountService;
+import yas.dio.katas.bankaccount.statement.StatementDTO;
 import yas.dio.katas.bankaccount.transaction.TransactionService;
 
 @Service

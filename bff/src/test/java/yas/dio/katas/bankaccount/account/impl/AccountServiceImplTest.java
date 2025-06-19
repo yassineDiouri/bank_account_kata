@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -14,11 +12,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import yas.dio.katas.bankaccount.account.Account;
 import yas.dio.katas.bankaccount.account.AccountNotFoundException;
 import yas.dio.katas.bankaccount.account.AccountRepository;
+import yas.dio.katas.bankaccount.statement.StatementDTO;
 import yas.dio.katas.bankaccount.transaction.TransactionService;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -71,7 +68,7 @@ class AccountServiceImplTest {
             //when
             final StatementDTO actual = accountService.getStatement(1L);
             //then
-            assertEquals(0, actual);
+            assertEquals(0, actual.getBalance());
             assertEquals(0, actual.getTransactions().size());
         }
 
@@ -81,7 +78,7 @@ class AccountServiceImplTest {
             //when
             final StatementDTO actual = accountService.getStatement(1L);
             //then
-            assertEquals(0, actual);
+            assertEquals(0, actual.getBalance());
             assertEquals(1, actual.getTransactions().size());
         }
 
@@ -91,7 +88,7 @@ class AccountServiceImplTest {
             //when
             final StatementDTO actual = accountService.getStatement(1L);
             //then
-            assertEquals(0, actual);
+            assertEquals(0, actual.getBalance());
             assertEquals(5, actual.getTransactions().size());
         }
 

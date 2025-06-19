@@ -1,5 +1,7 @@
 package yas.dio.katas.bankaccount.account;
 
+import yas.dio.katas.bankaccount.statement.StatementDTO;
+
 public interface AccountService {
 
     /**
