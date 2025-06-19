@@ -1,6 +1,15 @@
 # BankAccount
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.11.
+## Technical requirements
+
+- Angular 15
+- NodeJs 16.x
+
+## Functional requirements
+
+- US-1: Account deposit
+- US-2: Account withdraw
+- US-3: Account statement printing
 
 ## Development server
 
