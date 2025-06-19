@@ -22,9 +22,9 @@ export class AccountService {
     if (id === undefined || id === null) {
       return throwError(() => new Error('Invalid id'));
     }
-    if (amount || amount <= 0) {
+    if (!amount || amount <= 0) {
       return throwError(() => new Error('Invalid amount'));
     }
-    return of();
+    return this.http.put<void>(`${environment.apiBaseUrl}${environment.accountsPath}/${id}`, amount);
   }
 }

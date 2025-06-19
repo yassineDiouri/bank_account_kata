@@ -34,7 +34,7 @@ describe('AccountService', () => {
   });
 
   it('deposit should call http client for accounts url', () => {
-    service.deposit(1, 100);
+    service.deposit(1, 100).subscribe(() => {});
     const req = httpMock.expectOne(`${environment.apiBaseUrl}${environment.accountsPath}/1`);
     expect(req.request.method).toBe('PUT');
   });
