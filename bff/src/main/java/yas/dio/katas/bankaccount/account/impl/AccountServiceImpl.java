@@ -21,7 +21,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void deposit(Long id, double amount) {
-        throw new UnsupportedOperationException();
+    public void deposit(final Long id, final double amount) {
+        accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
     }
 }
