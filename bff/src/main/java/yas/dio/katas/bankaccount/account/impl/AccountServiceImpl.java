@@ -31,4 +31,14 @@ public class AccountServiceImpl implements AccountService {
         final Account account = accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
         account.setBalance(account.getBalance() + amount);
     }
+
+    @Override
+    @Transactional
+    public void withdraw(Long id, double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than zero");
+        }
+        final Account account = accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
+        account.setBalance(account.getBalance() - amount);
+    }
 }

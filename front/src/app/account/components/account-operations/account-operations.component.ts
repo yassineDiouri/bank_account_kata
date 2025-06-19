@@ -8,10 +8,15 @@ import {Component, EventEmitter, Output} from '@angular/core';
 export class AccountOperationsComponent {
 
   @Output() deposit: EventEmitter<number> = new EventEmitter();
+  @Output() withdraw: EventEmitter<number> = new EventEmitter();
 
   public amount = 0;
 
   depositClick() {
     this.deposit.emit(this.amount);
+  }
+
+  withdrawClick() {
+    this.withdraw.emit(this.amount);
   }
 }
