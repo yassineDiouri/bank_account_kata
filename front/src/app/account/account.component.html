@@ -15,5 +15,11 @@
         [balance]="balance"
       ></app-account-balance>
     </div>
+
+    <div class="sub-container">
+      <app-account-operations
+        (deposit)="deposit($event)"
+      ></app-account-operations>
+    </div>
   </div>
 </ng-template>

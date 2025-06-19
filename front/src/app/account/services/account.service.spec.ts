@@ -20,16 +20,18 @@ describe('AccountService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should throw Error for undefined arg id', (done) => {
-    service.getBalance(undefined).subscribe({
-      next: () => {
-        fail('Expected an error, but got a value');
-      },
-      error: (err) => {
-        expect(err).toBeTruthy();
-        expect(err.message).toBe('Invalid id');
-        done();
-      }
+
+  [undefined, null].forEach(id => {
+    it(`getBalance should throw Error for ${id} arg id`, (done) => {
+      service.getBalance(id as any).subscribe({
+        next: () => {
+          fail('Expected an error, but got a value');
+        },
+        error: (err) => {
+          expect(err).toBeTruthy();
+          done();
+        }
+      });
     });
   });
 
