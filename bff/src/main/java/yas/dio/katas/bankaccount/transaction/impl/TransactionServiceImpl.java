@@ -17,6 +17,8 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public void save(final Account account, final double amount) {
+        assertAccountNotNull(account);
+        assertAmountNotEqualsToZero(amount);
         transactionRepository.save(
                 Transaction.builder()
                         .date(LocalDateTime.now())
@@ -25,5 +27,17 @@ public class TransactionServiceImpl implements TransactionService {
                         .account(account)
                         .build()
         );
+    }
+
+    private void assertAccountNotNull(final Account account) {
+        if (account == null) {
+            throw new IllegalStateException("Account could not be null");
+        }
+    }
+
+    private void assertAmountNotEqualsToZero(final double amount) {
+        if (amount == 0) {
+            throw new IllegalStateException("Amount could not be zero");
+        }
     }
 }
