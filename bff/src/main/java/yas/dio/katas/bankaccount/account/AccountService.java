@@ -11,7 +11,6 @@ public interface AccountService {
      * @param id Account id
      * @return Account balance
      */
-    @Deprecated
     double getBalance(Long id);
 
     /**

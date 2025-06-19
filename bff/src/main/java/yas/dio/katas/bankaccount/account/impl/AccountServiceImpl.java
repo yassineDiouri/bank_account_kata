@@ -26,7 +26,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public StatementDTO getStatement(Long id) {
+    @Transactional(readOnly = true)
+    public StatementDTO getStatement(final Long id) {
+        final double accountBalance = this.getBalance(id);
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
