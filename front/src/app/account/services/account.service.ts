@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Observable, of, throwError} from "rxjs";
+import {Observable, throwError} from "rxjs";
 import {environment} from "../../../environments/environment";
 
 @Injectable({
@@ -29,6 +29,12 @@ export class AccountService {
   }
 
   withdraw(id: number, amount: number): Observable<void> {
-    return of();
+    if (id === undefined || id === null) {
+      return throwError(() => new Error('Invalid id'));
+    }
+    if (!amount || amount <= 0) {
+      return throwError(() => new Error('Invalid amount'));
+    }
+    return this.http.post<void>(`${environment.apiBaseUrl}${environment.accountsPath}/${id}`, amount);
   }
 }
