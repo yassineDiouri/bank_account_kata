@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -14,7 +16,9 @@ import yas.dio.katas.bankaccount.account.AccountNotFoundException;
 import yas.dio.katas.bankaccount.account.AccountRepository;
 import yas.dio.katas.bankaccount.transaction.TransactionService;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -54,6 +58,48 @@ class AccountServiceImplTest {
             when(accountRepository.findById(anyLong())).thenReturn(Optional.empty());
             //when
             Executable actual = () -> accountService.getBalance(1L);
+            //then
+            assertThrows(AccountNotFoundException.class, actual);
+        }
+    }
+
+    @Nested
+    class GetStatement {
+        @Test
+        void should_return_account_statement_with_balance_and_zero_transactions_when_found() {
+            //given
+            //when
+            final StatementDTO actual = accountService.getStatement(1L);
+            //then
+            assertEquals(0, actual);
+            assertEquals(0, actual.getTransactions().size());
+        }
+
+        @Test
+        void should_return_account_statement_with_balance_and_unique_transaction_when_found() {
+            //given
+            //when
+            final StatementDTO actual = accountService.getStatement(1L);
+            //then
+            assertEquals(0, actual);
+            assertEquals(1, actual.getTransactions().size());
+        }
+
+        @Test
+        void should_return_account_statement_with_balance_and_multi_transactions_when_found() {
+            //given
+            //when
+            final StatementDTO actual = accountService.getStatement(1L);
+            //then
+            assertEquals(0, actual);
+            assertEquals(5, actual.getTransactions().size());
+        }
+
+        @Test
+        void should_throws_AccountNotFoundException_when_id_not_found() {
+            //given
+            //when
+            Executable actual = () -> accountService.getStatement(1L);
             //then
             assertThrows(AccountNotFoundException.class, actual);
         }

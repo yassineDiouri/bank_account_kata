@@ -25,6 +25,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public StatementDTO getStatement(Long id) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
     @Transactional
     public void deposit(final Long id, final double amount) {
         if (amount <= 0) {

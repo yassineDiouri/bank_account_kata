@@ -7,9 +7,19 @@ public interface AccountService {
      * If account not found throws {@link AccountNotFoundException}
      *
      * @param id Account id
-     * @return Current account balance
+     * @return Account balance
      */
+    @Deprecated
     double getBalance(Long id);
+
+    /**
+     * Get the account statement for given id<br/>
+     * If account not found throws {@link AccountNotFoundException}
+     *
+     * @param id Account id
+     * @return Account statement
+     */
+    StatementDTO getStatement(Long id);
 
     /**
      * Make a deposit to given account Id<br/>
