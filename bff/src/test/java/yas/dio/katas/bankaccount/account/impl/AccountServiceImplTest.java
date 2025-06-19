@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -40,11 +42,46 @@ class AccountServiceImplTest {
         }
 
         @Test
-        void should_return_throws_AccountNotFoundException_when_not_found() {
+        void should_throws_AccountNotFoundException_when_id_not_found() {
             //given
             when(accountRepository.findById(anyLong())).thenReturn(Optional.empty());
             //when
             Executable actual = () -> accountService.getBalance(1L);
+            //then
+            assertThrows(AccountNotFoundException.class, actual);
+        }
+    }
+
+    @Nested
+    class Deposit {
+        @Test
+        void should_add_amount_to_existent_account_balance() {
+            //given
+            final Account account = buildAccount(1000d);
+
+            when(accountRepository.findById(anyLong())).thenReturn(Optional.of(account));
+            //when
+            accountService.deposit(1L, 100);
+            //then
+            assertEquals(1100d, account.getBalance());
+        }
+
+        @ParameterizedTest
+        @ValueSource(doubles =  {0, -100d})
+        void should_throws_IllegalArgumentException_when_amount_is_negative_or_zero(final double amount) {
+            //given
+            //when
+            Executable actual = () -> accountService.deposit(1L, amount);
+            //then
+            assertThrows(IllegalArgumentException.class, actual);
+        }
+
+        @Test
+        void should_throws_AccountNotFoundException_when_id_not_found() {
+            //given
+            when(accountRepository.findById(anyLong())).thenReturn(Optional.empty());
+            //when
+            Executable actual = () -> accountService.deposit(1L, 1000d);
             //then
             assertThrows(AccountNotFoundException.class, actual);
         }

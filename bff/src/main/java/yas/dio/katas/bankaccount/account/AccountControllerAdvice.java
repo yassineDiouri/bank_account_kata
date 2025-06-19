@@ -14,4 +14,11 @@ public class AccountControllerAdvice {
                 .status(HttpStatus.NOT_FOUND)
                 .body(ex.getMessage());
     }
+
+    @ExceptionHandler({IllegalArgumentException.class, NumberFormatException.class})
+    public ResponseEntity<String> handleIllegalArgument(final IllegalArgumentException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
+    }
 }
