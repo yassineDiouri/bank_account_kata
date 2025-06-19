@@ -7,12 +7,14 @@ import yas.dio.katas.bankaccount.account.Account;
 import yas.dio.katas.bankaccount.account.AccountNotFoundException;
 import yas.dio.katas.bankaccount.account.AccountRepository;
 import yas.dio.katas.bankaccount.account.AccountService;
+import yas.dio.katas.bankaccount.transaction.TransactionService;
 
 @Service
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
+    private final TransactionService transactionService;
 
     @Override
     @Transactional(readOnly = true)
@@ -30,6 +32,7 @@ public class AccountServiceImpl implements AccountService {
         }
         final Account account = accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
         account.setBalance(account.getBalance() + amount);
+        transactionService.save(account, amount);
     }
 
     @Override
@@ -40,5 +43,6 @@ public class AccountServiceImpl implements AccountService {
         }
         final Account account = accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
         account.setBalance(account.getBalance() - amount);
+        transactionService.save(account, -amount);
     }
 }

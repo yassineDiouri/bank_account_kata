@@ -62,7 +62,7 @@ class AccountServiceImplTest {
     @Nested
     class Deposit {
         @Test
-        void should_add_amount_to_existent_account_balance() {
+        void should_add_amount_to_existent_account_balance_and_add_new_positive_transaction() {
             //given
             final Account account = buildAccount(1000d);
 
@@ -99,7 +99,7 @@ class AccountServiceImplTest {
     @Nested
     class Withdraw {
         @Test
-        void should_retrieve_amount_from_existent_account_balance() {
+        void should_retrieve_amount_from_existent_account_balance_and_add_new_negative_transaction() {
             //given
             final Account account = buildAccount(1000d);
 
