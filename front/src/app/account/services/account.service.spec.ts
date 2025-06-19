@@ -20,10 +20,9 @@ describe('AccountService', () => {
     expect(service).toBeTruthy();
   });
 
-
   [undefined, null].forEach(id => {
-    it(`getBalance should throw Error for ${id} arg id`, (done) => {
-      service.getBalance(id as any).subscribe({
+    it(`getStatement should throw Error for ${id} arg id`, (done) => {
+      service.getStatement(id as any).subscribe({
         next: () => {
           fail('Expected an error, but got a value');
         },
@@ -33,6 +32,12 @@ describe('AccountService', () => {
         }
       });
     });
+  });
+
+  it('getStatement should call http client for accounts url using get method', () => {
+    service.getStatement(1).subscribe(() => {});
+    const req = httpMock.expectOne(`${environment.apiBaseUrl}${environment.accountsPath}/1`);
+    expect(req.request.method).toBe('GET');
   });
 
   it('deposit should call http client for accounts url using put method', () => {
