@@ -28,8 +28,10 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional(readOnly = true)
     public StatementDTO getStatement(final Long id) {
-        final double accountBalance = this.getBalance(id);
-        throw new UnsupportedOperationException("Not supported yet.");
+        return StatementDTO.builder()
+                .balance(this.getBalance(id))
+                .transactions(transactionService.getByAccountIdOrderByDateDesc(id))
+                .build();
     }
 
     @Override

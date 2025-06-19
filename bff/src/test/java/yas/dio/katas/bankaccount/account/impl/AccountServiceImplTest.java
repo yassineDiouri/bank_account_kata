@@ -13,8 +13,10 @@ import yas.dio.katas.bankaccount.account.Account;
 import yas.dio.katas.bankaccount.account.AccountNotFoundException;
 import yas.dio.katas.bankaccount.account.AccountRepository;
 import yas.dio.katas.bankaccount.statement.StatementDTO;
+import yas.dio.katas.bankaccount.transaction.TransactionDTO;
 import yas.dio.katas.bankaccount.transaction.TransactionService;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -65,36 +67,44 @@ class AccountServiceImplTest {
         @Test
         void should_return_account_statement_with_balance_and_zero_transactions_when_found() {
             //given
+            when(accountRepository.findById(anyLong())).thenReturn(Optional.of(buildAccount(100d)));
+            when(transactionService.getByAccountIdOrderByDateDesc(anyLong())).thenReturn(List.of());
             //when
             final StatementDTO actual = accountService.getStatement(1L);
             //then
-            assertEquals(0, actual.getBalance());
+            assertEquals(100d, actual.getBalance());
             assertEquals(0, actual.getTransactions().size());
         }
 
         @Test
         void should_return_account_statement_with_balance_and_unique_transaction_when_found() {
             //given
+            when(accountRepository.findById(anyLong())).thenReturn(Optional.of(buildAccount(100d)));
+            when(transactionService.getByAccountIdOrderByDateDesc(anyLong())).thenReturn(List.of(new TransactionDTO()));
             //when
             final StatementDTO actual = accountService.getStatement(1L);
             //then
-            assertEquals(0, actual.getBalance());
+            assertEquals(100d, actual.getBalance());
             assertEquals(1, actual.getTransactions().size());
         }
 
         @Test
         void should_return_account_statement_with_balance_and_multi_transactions_when_found() {
             //given
+            when(accountRepository.findById(anyLong())).thenReturn(Optional.of(buildAccount(100d)));
+            when(transactionService.getByAccountIdOrderByDateDesc(anyLong()))
+                    .thenReturn(List.of(new TransactionDTO(), new TransactionDTO(), new TransactionDTO(), new TransactionDTO(), new TransactionDTO()));
             //when
             final StatementDTO actual = accountService.getStatement(1L);
             //then
-            assertEquals(0, actual.getBalance());
+            assertEquals(100d, actual.getBalance());
             assertEquals(5, actual.getTransactions().size());
         }
 
         @Test
         void should_throws_AccountNotFoundException_when_id_not_found() {
             //given
+            when(accountRepository.findById(anyLong())).thenReturn(Optional.empty());
             //when
             Executable actual = () -> accountService.getStatement(1L);
             //then
@@ -119,7 +129,7 @@ class AccountServiceImplTest {
         }
 
         @ParameterizedTest
-        @ValueSource(doubles =  {0, -100d})
+        @ValueSource(doubles = {0, -100d})
         void should_throws_IllegalArgumentException_when_amount_is_negative_or_zero(final double amount) {
             //given
             //when
@@ -156,7 +166,7 @@ class AccountServiceImplTest {
         }
 
         @ParameterizedTest
-        @ValueSource(doubles =  {0, -100d})
+        @ValueSource(doubles = {0, -100d})
         void should_throws_IllegalArgumentException_when_amount_is_negative_or_zero(final double amount) {
             //given
             //when
