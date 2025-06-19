@@ -17,7 +17,11 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,6 +29,8 @@ class AccountServiceImplTest {
 
     @Mock
     private AccountRepository accountRepository;
+    @Mock
+    private TransactionService transactionService;
 
     @InjectMocks
     private AccountServiceImpl accountService;
@@ -60,10 +66,12 @@ class AccountServiceImplTest {
             final Account account = buildAccount(1000d);
 
             when(accountRepository.findById(anyLong())).thenReturn(Optional.of(account));
+            doNothing().when(transactionService).save(any(Account.class), anyDouble());
             //when
             accountService.deposit(1L, 100);
             //then
             assertEquals(1100d, account.getBalance());
+            verify(transactionService).save(account, 100d);
         }
 
         @ParameterizedTest
@@ -95,10 +103,12 @@ class AccountServiceImplTest {
             final Account account = buildAccount(1000d);
 
             when(accountRepository.findById(anyLong())).thenReturn(Optional.of(account));
+            doNothing().when(transactionService).save(any(Account.class), anyDouble());
             //when
             accountService.withdraw(1L, 100);
             //then
             assertEquals(900d, account.getBalance());
+            verify(transactionService).save(account, -100d);
         }
 
         @ParameterizedTest
