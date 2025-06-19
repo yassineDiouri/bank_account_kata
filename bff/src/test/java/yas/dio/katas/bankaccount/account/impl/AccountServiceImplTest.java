@@ -40,29 +40,6 @@ class AccountServiceImplTest {
     private AccountServiceImpl accountService;
 
     @Nested
-    class GetBalance {
-        @Test
-        void should_return_account_balance_when_found() {
-            //given
-            when(accountRepository.findById(anyLong())).thenReturn(Optional.of(buildAccount(100d)));
-            //when
-            final double actual = accountService.getBalance(1L);
-            //then
-            assertEquals(100d, actual);
-        }
-
-        @Test
-        void should_throws_AccountNotFoundException_when_id_not_found() {
-            //given
-            when(accountRepository.findById(anyLong())).thenReturn(Optional.empty());
-            //when
-            Executable actual = () -> accountService.getBalance(1L);
-            //then
-            assertThrows(AccountNotFoundException.class, actual);
-        }
-    }
-
-    @Nested
     class GetStatement {
         @Test
         void should_return_account_statement_with_balance_and_zero_transactions_when_found() {

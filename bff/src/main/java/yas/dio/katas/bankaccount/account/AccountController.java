@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import yas.dio.katas.bankaccount.statement.StatementDTO;
 
 @RestController
 @RequestMapping("accounts")
@@ -18,8 +19,8 @@ public class AccountController {
     private final AccountService accountService;
 
     @GetMapping("/{id}")
-    public double getBalance(@PathVariable final Long id) {
-        return accountService.getBalance(id);
+    public StatementDTO getStatement(@PathVariable final Long id) {
+        return accountService.getStatement(id);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.TEXT_PLAIN_VALUE)

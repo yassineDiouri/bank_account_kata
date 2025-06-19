@@ -5,15 +5,6 @@ import yas.dio.katas.bankaccount.statement.StatementDTO;
 public interface AccountService {
 
     /**
-     * Get the account balance for given id<br/>
-     * If account not found throws {@link AccountNotFoundException}
-     *
-     * @param id Account id
-     * @return Account balance
-     */
-    double getBalance(Long id);
-
-    /**
      * Get the account statement for given id<br/>
      * If account not found throws {@link AccountNotFoundException}
      *

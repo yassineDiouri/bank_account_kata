@@ -19,14 +19,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional(readOnly = true)
-    public double getBalance(final Long id) {
-        return accountRepository.findById(id)
-                .map(Account::getBalance)
-                .orElseThrow(() -> new AccountNotFoundException(id));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public StatementDTO getStatement(final Long id) {
         return StatementDTO.builder()
                 .balance(this.getBalance(id))
@@ -54,5 +46,18 @@ public class AccountServiceImpl implements AccountService {
         final Account account = accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
         account.setBalance(account.getBalance() - amount);
         transactionService.save(account, -amount);
+    }
+
+    /**
+     * Get the account balance for given id<br/>
+     * If account not found throws {@link AccountNotFoundException}
+     *
+     * @param id Account id
+     * @return Account balance
+     */
+    private double getBalance(final Long id) {
+        return accountRepository.findById(id)
+                .map(Account::getBalance)
+                .orElseThrow(() -> new AccountNotFoundException(id));
     }
 }
