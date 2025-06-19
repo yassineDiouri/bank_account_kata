@@ -1,0 +1,18 @@
+<div class="container">
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Date</th>
+      <th>Amount</th>
+      <th>Account Balance</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let transaction of transactions">
+      <td>{{ transaction.date }}</td>
+      <td>{{ transaction.amount }}</td>
+      <td>{{ transaction.balance }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

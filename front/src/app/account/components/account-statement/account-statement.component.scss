@@ -1,0 +1,19 @@
+.container {
+  width: 100%;
+
+  & .table {
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+
+    & th {
+      font-size: 24px;
+      border: 1px solid black;
+    }
+
+    & td {
+      font-size: 20px;
+      border: 1px solid black;
+    }
+  }
+}
